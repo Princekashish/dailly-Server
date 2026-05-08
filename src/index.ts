@@ -22,7 +22,7 @@ connectDB()
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://dailly-five.vercel.app"],
+    origin: ["http://localhost:3000", "https://dailly-five.vercel.app", "http://localhost:5173", "https://dailyy-delivey.vercel.app"],
     credentials: true,
   })
 );
