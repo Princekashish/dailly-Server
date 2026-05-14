@@ -2,6 +2,7 @@ import { IProduct, Product } from "../models/product.model";
 
 export interface ProductFilter {
     categoryId?: string;
+    categoryIds?: string[];
     title?: string;
     isActive?: boolean;
     minPrice?: number;
@@ -17,6 +18,9 @@ export const productRepo = {
         const query: any = {};
         if (filter.categoryId) {
             query.categoryId = filter.categoryId;
+        }
+        if (filter.categoryIds && filter.categoryIds.length > 0) {
+            query.categoryId = { $in: filter.categoryIds };
         }
         if (filter.title) {
             query.title = { $regex: filter.title, $options: "i" };
