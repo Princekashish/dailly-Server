@@ -15,6 +15,7 @@ router.get("/appliance", productController.getAppliances);
 router.get("/electronic", productController.getElectronic);
 router.get("/drinks", productController.getDrinks);
 router.get("/game", productController.getGames);
+router.get("/grocery", productController.getGrocery);
 router.get("/fruits", productController.getFruits);
 // router.get("/:category", productController.getProductsByCategory);
 router.get("/:id", productController.getOne);
