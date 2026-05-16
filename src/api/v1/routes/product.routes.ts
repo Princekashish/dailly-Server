@@ -11,6 +11,7 @@ router.get(
     "/", productController.getAll
 );
 router.get("/vegetable", productController.getVegetables);
+router.get("/appliances", productController.getAppliances);
 router.get("/:id", productController.getOne);
 router.put("/:id",upload.array('images'),  productController.update);
 router.delete("/:id", productController.delete);

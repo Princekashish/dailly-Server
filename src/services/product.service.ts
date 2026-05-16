@@ -9,7 +9,6 @@ export const productService = {
     },
     async getAllProducts(filter: ProductFilter): Promise<IProduct[]> {
         const products = await productRepo.getAll(filter);
-
         return products;
     },
 
