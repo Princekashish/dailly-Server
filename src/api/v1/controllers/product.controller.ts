@@ -81,45 +81,163 @@ export const productController = {
         }
     },
 
-    async getProductsByCategory(
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ) {
+    async getAppliances(req: Request, res: Response, next: NextFunction) {
         try {
-            const rawCategory = req.params.category;
-            if (!rawCategory) {
-                return res.status(400).json({
-                    message: "Category is required",
-                });
-            }
+            // Find categories related to 'vegetable'
+            const categories = await Category.find({ name: { $regex: 'appliance', $options: 'i' } });
 
-            const category = Array.isArray(rawCategory)
-                ? rawCategory[0]
-                : rawCategory;
-
-            const search = category.trim();
-
-            const categories = await Category.find({
-                name: new RegExp(search, "i"),
-                isActive: true,
-            });
-
-            if (!categories.length) {
+            if (!categories || categories.length === 0) {
                 return res.status(200).json([]);
             }
-            const categoryIds = categories.map((cat) => cat._id.toString());
 
-            const products = await productService.getAllProducts({
-                categoryIds,
-                isActive: true,
-            });
+            const categoryIds = categories.map(cat => cat._id.toString());
 
+            const filter = {
+                categoryIds: categoryIds,
+                isActive: true
+            };
+
+            const products = await productService.getAllProducts(filter);
             return res.status(200).json(products);
-        } catch (error) {
-            next(error);
+        } catch (err) {
+            next(err);
         }
     },
+
+    async getElectronic(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Find categories related to 'vegetable'
+            const categories = await Category.find({ name: { $regex: 'electronic', $options: 'i' } });
+
+            if (!categories || categories.length === 0) {
+                return res.status(200).json([]);
+            }
+
+            const categoryIds = categories.map(cat => cat._id.toString());
+
+            const filter = {
+                categoryIds: categoryIds,
+                isActive: true
+            };
+
+            const products = await productService.getAllProducts(filter);
+            return res.status(200).json(products);
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    async getDrinks(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Find categories related to 'vegetable'
+            const categories = await Category.find({ name: { $regex: 'drinks', $options: 'i' } });
+
+            if (!categories || categories.length === 0) {
+                return res.status(200).json([]);
+            }
+
+            const categoryIds = categories.map(cat => cat._id.toString());
+
+            const filter = {
+                categoryIds: categoryIds,
+                isActive: true
+            };
+
+            const products = await productService.getAllProducts(filter);
+            return res.status(200).json(products);
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    async getFruits(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Find categories related to 'vegetable'
+            const categories = await Category.find({ name: { $regex: 'fruits', $options: 'i' } });
+
+            if (!categories || categories.length === 0) {
+                return res.status(200).json([]);
+            }
+
+            const categoryIds = categories.map(cat => cat._id.toString());
+
+            const filter = {
+                categoryIds: categoryIds,
+                isActive: true
+            };
+
+            const products = await productService.getAllProducts(filter);
+            return res.status(200).json(products);
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    async getGames(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Find categories related to 'vegetable'
+            const categories = await Category.find({ name: { $regex: 'game', $options: 'i' } });
+
+            if (!categories || categories.length === 0) {
+                return res.status(200).json([]);
+            }
+
+            const categoryIds = categories.map(cat => cat._id.toString());
+
+            const filter = {
+                categoryIds: categoryIds,
+                isActive: true
+            };
+
+            const products = await productService.getAllProducts(filter);
+            return res.status(200).json(products);
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    
+
+
+    // async getProductsByCategory(
+    //     req: Request,
+    //     res: Response,
+    //     next: NextFunction
+    // ) {
+    //     try {
+    //         const rawCategory = req.params.category;
+    //         if (!rawCategory) {
+    //             return res.status(400).json({
+    //                 message: "Category is required",
+    //             });
+    //         }
+
+    //         const category = Array.isArray(rawCategory)
+    //             ? rawCategory[0]
+    //             : rawCategory;
+
+    //         const search = category.trim();
+
+    //         const categories = await Category.find({
+    //             name: new RegExp(search, "i"),
+    //             isActive: true,
+    //         });
+
+    //         if (!categories.length) {
+    //             return res.status(200).json([]);
+    //         }
+    //         const categoryIds = categories.map((cat) => cat._id.toString());
+
+    //         const products = await productService.getAllProducts({
+    //             categoryIds,
+    //             isActive: true,
+    //         });
+
+    //         return res.status(200).json(products);
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // },
 
     async getOne(req: Request, res: Response, next: NextFunction) {
         try {
