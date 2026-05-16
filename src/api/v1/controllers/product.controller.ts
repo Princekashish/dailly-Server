@@ -62,18 +62,18 @@ export const productController = {
         try {
             // Find categories related to 'vegetable'
             const categories = await Category.find({ name: { $regex: 'vegetable', $options: 'i' } });
-            
+
             if (!categories || categories.length === 0) {
                 return res.status(200).json([]);
             }
-            
+
             const categoryIds = categories.map(cat => cat._id.toString());
-            
+
             const filter = {
                 categoryIds: categoryIds,
                 isActive: true
             };
-            
+
             const products = await productService.getAllProducts(filter);
             return res.status(200).json(products);
         } catch (err) {
@@ -81,28 +81,44 @@ export const productController = {
         }
     },
 
-    async getAppliances(req: Request, res: Response, next: NextFunction){
+    async getProductsByCategory(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         try {
+            const rawCategory = req.params.category;
+            if (!rawCategory) {
+                return res.status(400).json({
+                    message: "Category is required",
+                });
+            }
 
-            const categories = await Category.find({ name: { $regex: 'appliances', $options: 'i' } });
-            
-            if (!categories || categories.length === 0) {
+            const category = Array.isArray(rawCategory)
+                ? rawCategory[0]
+                : rawCategory;
+
+            const search = category.trim();
+
+            const categories = await Category.find({
+                name: new RegExp(search, "i"),
+                isActive: true,
+            });
+
+            if (!categories.length) {
                 return res.status(200).json([]);
             }
-            
-            const categoryIds = categories.map(cat => cat._id.toString());
-            
-            const filter = {
-                categoryIds: categoryIds,
-                isActive: true
-            };
-            
-            const products = await productService.getAllProducts(filter);
+            const categoryIds = categories.map((cat) => cat._id.toString());
+
+            const products = await productService.getAllProducts({
+                categoryIds,
+                isActive: true,
+            });
+
             return res.status(200).json(products);
         } catch (error) {
-            
+            next(error);
         }
-
     },
 
     async getOne(req: Request, res: Response, next: NextFunction) {
