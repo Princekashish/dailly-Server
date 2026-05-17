@@ -219,6 +219,29 @@ export const productController = {
         }
     },
 
+    async getGift(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Find categories related to 'vegetable'
+            const categories = await Category.find({ name: { $regex: 'gift', $options: 'i' } });
+
+            if (!categories || categories.length === 0) {
+                return res.status(200).json([]);
+            }
+
+            const categoryIds = categories.map(cat => cat._id.toString());
+
+            const filter = {
+                categoryIds: categoryIds,
+                isActive: true
+            };
+
+            const products = await productService.getAllProducts(filter);
+            return res.status(200).json(products);
+        } catch (err) {
+            next(err);
+        }
+    },
+
     // async getProductsByCategory(
     //     req: Request,
     //     res: Response,

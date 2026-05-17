@@ -17,6 +17,7 @@ router.get("/drinks", productController.getDrinks);
 router.get("/game", productController.getGames);
 router.get("/grocery", productController.getGrocery);
 router.get("/fruits", productController.getFruits);
+router.get("/gift", productController.getGift);
 // router.get("/:category", productController.getProductsByCategory);
 router.get("/:id", productController.getOne);
 router.put("/:id",upload.array('images'),  productController.update);
