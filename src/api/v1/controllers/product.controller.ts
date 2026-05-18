@@ -241,6 +241,95 @@ export const productController = {
             next(err);
         }
     },
+    async getGym(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Find categories related to 'vegetable'
+            const categories = await Category.find({ name: { $regex: 'gym', $options: 'i' } });
+
+            if (!categories || categories.length === 0) {
+                return res.status(200).json([]);
+            }
+
+            const categoryIds = categories.map(cat => cat._id.toString());
+
+            const filter = {
+                categoryIds: categoryIds,
+                isActive: true
+            };
+
+            const products = await productService.getAllProducts(filter);
+            return res.status(200).json(products);
+        } catch (err) {
+            next(err);
+        }
+    },
+    async getPersonalCare(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Find categories related to 'vegetable'
+            const categories = await Category.find({ name: { $regex: 'personal care', $options: 'i' } });
+
+            if (!categories || categories.length === 0) {
+                return res.status(200).json([]);
+            }
+
+            const categoryIds = categories.map(cat => cat._id.toString());
+
+            const filter = {
+                categoryIds: categoryIds,
+                isActive: true
+            };
+
+            const products = await productService.getAllProducts(filter);
+            return res.status(200).json(products);
+        } catch (err) {
+            next(err);
+        }
+    },
+    async getSnacks(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Find categories related to 'vegetable'
+            const categories = await Category.find({ name: { $regex: 'snacks', $options: 'i' } });
+
+            if (!categories || categories.length === 0) {
+                return res.status(200).json([]);
+            }
+
+            const categoryIds = categories.map(cat => cat._id.toString());
+
+            const filter = {
+                categoryIds: categoryIds,
+                isActive: true
+            };
+
+            const products = await productService.getAllProducts(filter);
+            return res.status(200).json(products);
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    async getBulk(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Find categories related to 'vegetable'
+            const categories = await Category.find({ name: { $regex: 'bulk', $options: 'i' } });
+
+            if (!categories || categories.length === 0) {
+                return res.status(200).json([]);
+            }
+
+            const categoryIds = categories.map(cat => cat._id.toString());
+
+            const filter = {
+                categoryIds: categoryIds,
+                isActive: true
+            };
+
+            const products = await productService.getAllProducts(filter);
+            return res.status(200).json(products);
+        } catch (err) {
+            next(err);
+        }
+    },
 
     // async getProductsByCategory(
     //     req: Request,
