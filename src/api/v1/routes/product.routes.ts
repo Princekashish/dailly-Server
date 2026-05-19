@@ -21,6 +21,7 @@ router.get("/gym", productController.getGym);
 router.get("/personal-care", productController.getPersonalCare);
 router.get("/snacks", productController.getSnacks);
 router.get("/bulk", productController.getBulk);
+router.get("/gift", productController.getGift);
 
 // router.get("/:category", productController.getProductsByCategory);
 router.get("/:id", productController.getOne);
