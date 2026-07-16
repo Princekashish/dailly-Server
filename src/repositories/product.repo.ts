@@ -1,18 +1,21 @@
-import { IProduct, Product } from "../models/product.model";
+import { IProduct, Product } from "../models/Product/products.model";
 
 export interface ProductFilter {
     categoryId?: string;
     categoryIds?: string[];
-    title?: string;
+    subcategoryId?: string;
+    brandId?: string;
+    name?: string;
     isActive?: boolean;
-    minPrice?: number;
-    maxPrice?: number;
 }
 
 export const productRepo = {
     async create(data: Partial<IProduct>) {
         const doc = new Product(data);
         return doc.save();
+    },
+    async findBySlug(slug: string) {
+        return Product.findOne({ slug });
     },
     async getAll(filter: ProductFilter = {}) {
         const query: any = {};
@@ -22,32 +25,34 @@ export const productRepo = {
         if (filter.categoryIds && filter.categoryIds.length > 0) {
             query.categoryId = { $in: filter.categoryIds };
         }
-        if (filter.title) {
-            query.title = { $regex: filter.title, $options: "i" };
+        if (filter.subcategoryId) {
+            query.subcategoryId = filter.subcategoryId;
+        }
+        if (filter.brandId) {
+            query.brandId = filter.brandId;
+        }
+        if (filter.name) {
+            query.name = { $regex: filter.name, $options: "i" };
         }
         if (typeof filter.isActive === "boolean") {
             query.isActive = filter.isActive;
         }
-        if (filter.minPrice !== undefined || filter.maxPrice !== undefined) {
-            query.price = {};
-            if (filter.minPrice !== undefined) query.price.$gte = filter.minPrice;
-            if (filter.maxPrice !== undefined) query.price.$lte = filter.maxPrice;
-        }
         const products = await Product.find(query)
-            .populate("categoryId", "name")
+            .populate({ path: "categoryId", model: "Category", select: "name" })
             .sort({ createdAt: -1 });
 
         return products;
     },
     async getById(id: string) {
-        return await Product.findById(id).populate(
-            "categoryId",
-            "name"
-        );
+        return await Product.findById(id).populate({
+            path: "categoryId",
+            model: "Category",
+            select: "name"
+        });
     },
 
     async update(id: string, data: any) {
-        
+
 
         return await Product.findByIdAndUpdate(id, data, { new: true });
     },
